@@ -485,7 +485,7 @@ SymbolBucket.prototype.addSymbols = function(programName, quadsStart, quadsEnd, 
         if (minZoom === placementZoom) minZoom = 0;
 
         // Encode angle of line together with symbol.alongLine
-        var placementAngleLine = symbol.curved ? 0 : 1 + Math.round(((angle%Math.PI)/Math.PI)*255);
+        var placementAngleLine = symbol.curved ? 0 : 1 + Math.round(((angle % Math.PI) / Math.PI) * 255);
 
         var index = addVertex(vertexArray, anchorPoint.x, anchorPoint.y, tl.x, tl.y, tex.x, tex.y, minZoom, maxZoom, placementZoom, placementAngleLine);
         addVertex(vertexArray, anchorPoint.x, anchorPoint.y, tr.x, tr.y, tex.x + tex.w, tex.y, minZoom, maxZoom, placementZoom, placementAngleLine);

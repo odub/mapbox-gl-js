@@ -12,7 +12,7 @@ var minScale = 0.5; // underscale by 1 zoom level
 
 // Characters along a line must be placed within 10 degree threshold to be
 // straight enough for linear placement.
-var LINEAR_THRESHOLD = 10 / 360 * (Math.PI*2);
+var LINEAR_THRESHOLD = 10 / 360 * (Math.PI * 2);
 
 /**
  * A textured quad for rendering a single icon or glyph.
@@ -121,23 +121,26 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
     var angleMin = Infinity;
     var angleMax = -Infinity;
 
+    var k, i, positionedGlyph, glyph, rect, curved, linear, labelMinScale;
+
     // First iteration, generate all curved and linear glyphs
-    for (var k = 0; k < positionedGlyphs.length; k++) {
+    for (k = 0; k < positionedGlyphs.length; k++) {
         if (!positionedGlyphs[k].glyph.rect) continue;
 
-        var positionedGlyph = positionedGlyphs[k];
-        var glyph = positionedGlyph.glyph;
-        var rect = glyph.rect;
+        positionedGlyph = positionedGlyphs[k];
+        glyph = positionedGlyph.glyph;
+        rect = glyph.rect;
+
+        curved = [];
+        linear = [];
+        labelMinScale = minScale;
 
         var centerX = (positionedGlyph.x + glyph.advance / 2) * boxScale;
 
-        var curved = [];
-        var linear = [];
-        var labelMinScale = minScale;
         if (alongLine) {
             labelMinScale = getSegmentGlyphs(curved, anchor, centerX, line, anchor.segment, true);
             if (positionedGlyph.codePoint > 32) {
-                for (var i = 0; i < curved.length; i++) {
+                for (i = 0; i < curved.length; i++) {
                     if (curved[i].minScale < 1.0) continue;
                     angleMin = Math.min(curved[i].angle, angleMin);
                     angleMax = Math.max(curved[i].angle, angleMax);
@@ -165,19 +168,20 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
     }
 
     // Second iteration, determine which glyph placements to use
-    for (var k = 0; k < positionedGlyphs.length; k++) {
+    for (k = 0; k < positionedGlyphs.length; k++) {
         if (!positionedGlyphs[k].glyph.rect) continue;
 
-        var positionedGlyph = positionedGlyphs[k];
-        var glyph = positionedGlyph.glyph;
-        var rect = glyph.rect;
+        positionedGlyph = positionedGlyphs[k];
+        glyph = positionedGlyph.glyph;
+        rect = glyph.rect;
 
-        var labelMinScale = segmentedGlyphs[k].labelMinScale;
+        labelMinScale = segmentedGlyphs[k].labelMinScale;
 
         // Find the angle between min and max angles of positioned glyph
         // characters as a cheap way to determine whether a label's characters
         // are largely placed in a single linear line.
-        var curved = alongLine && ((angleMax-angleMin) >= LINEAR_THRESHOLD);
+        curved = alongLine && ((angleMax - angleMin) >= LINEAR_THRESHOLD);
+
         var glyphInstances = curved ? segmentedGlyphs[k].curved : segmentedGlyphs[k].linear;
 
         var x1 = positionedGlyph.x + glyph.left,
@@ -190,7 +194,7 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
             obl = new Point(x1, y2),
             obr = new Point(x2, y2);
 
-        for (var i = 0; i < glyphInstances.length; i++) {
+        for (i = 0; i < glyphInstances.length; i++) {
 
             var instance = glyphInstances[i],
                 tl = otl,
