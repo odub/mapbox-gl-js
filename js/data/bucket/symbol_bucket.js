@@ -483,7 +483,7 @@ SymbolBucket.prototype.addSymbols = function(programName, quadsStart, quadsEnd, 
         // Lower min zoom so that while fading out the label it can be shown outside of collision-free zoom levels
         if (minZoom === placementZoom) minZoom = 0;
 
-        // Encode angle of line
+        // Encode angle of glyph
         var glyphAngle = Math.round((symbol.glyphAngle / (Math.PI * 2)) * 256);
 
         var index = addVertex(vertexArray, anchorPoint.x, anchorPoint.y, tl.x, tl.y, tex.x, tex.y, minZoom, maxZoom, placementZoom, glyphAngle);

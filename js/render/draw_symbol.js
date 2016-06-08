@@ -109,26 +109,24 @@ function drawSymbol(painter, layer, posMatrix, tile, bucket, bufferGroups, isTex
     var defaultSize = isText ? 24 : 1;
     var fontScale = size / defaultSize;
 
-    var s1 = painter.transform.altitude * fontScale;
-    var s2 = pixelsToTileUnits(tile, 1, painter.transform.zoom) * fontScale;
-    var gammaScale = 1; // 1 / Math.cos(tr._pitch);
-    var extrudeScale = [ tr.pixelsToGLUnits[0] * s1, tr.pixelsToGLUnits[1] * s1];
-    var extrudeScaleSkewed = [s2, s2];
+    var extrudeScale, s, gammaScale;
+    if (alignedWithMap && !sdf) {
+        s = pixelsToTileUnits(tile, 1, painter.transform.zoom) * fontScale;
+        gammaScale = 1 / Math.cos(tr._pitch);
+        extrudeScale = [s, s];
+    } else {
+        s = painter.transform.altitude * fontScale;
+        gammaScale = 1;
+        extrudeScale = [ tr.pixelsToGLUnits[0] * s, tr.pixelsToGLUnits[1] * s];
+    }
 
     if (!isText && !painter.style.sprite.loaded())
         return;
 
-    var program;
-    if (sdf && alignedWithMap) {
-        program = painter.useProgram('sdf');
-    } else if (sdf) {
-        program = painter.useProgram('sdfviewport');
-    } else {
-        program = painter.useProgram('icon');
-    }
+    var program = painter.useProgram(sdf ? 'sdf' : 'icon');
     gl.uniformMatrix4fv(program.u_matrix, false, painter.translatePosMatrix(posMatrix, tile, translate, translateAnchor));
+    gl.uniform1i(program.u_skewed, alignedWithMap);
     gl.uniform2fv(program.u_extrude_scale, extrudeScale);
-    gl.uniform2fv(program.u_extrude_scale_skewed, extrudeScaleSkewed);
 
     gl.activeTexture(gl.TEXTURE0);
     gl.uniform1i(program.u_texture, 0);

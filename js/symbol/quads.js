@@ -113,11 +113,6 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
     var positionedGlyphs = shaping.positionedGlyphs;
     var quads = [];
 
-    var angleMin = Infinity;
-    var angleMax = -Infinity;
-
-    var k, i, positionedGlyph, glyph, rect, curved, linear, labelMinScale;
-
     for (var k = 0; k < positionedGlyphs.length; k++) {
         var positionedGlyph = positionedGlyphs[k];
         var glyph = positionedGlyph.glyph;
@@ -135,6 +130,7 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
             if (keepUpright) {
                 labelMinScale = Math.min(labelMinScale, getSegmentGlyphs(glyphInstances, anchor, centerX, line, anchor.segment, false));
             }
+
         } else {
             glyphInstances = [{
                 anchorPoint: new Point(anchor.x, anchor.y),
@@ -161,8 +157,7 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
                 tl = otl,
                 tr = otr,
                 bl = obl,
-                br = obr,
-                angle = instance.angle + textRotate;
+                br = obr;
 
             // Prevent label from extending past the end of the line
             var glyphMinScale = Math.max(instance.minScale, labelMinScale);

@@ -29,10 +29,10 @@ test('getIconQuads', function(t) {
                 bl: { x: -8, y: 5 },
                 br: { x: 7, y: 5 },
                 tex: { w: 15, h: 11 },
-                angle: 0,
+                anchorAngle: 0,
+                glyphAngle: 0,
                 minScale: 0.5,
-                maxScale: Infinity,
-                curved: null } ]);
+                maxScale: Infinity } ]);
         t.end();
     });
 
@@ -46,10 +46,10 @@ test('getIconQuads', function(t) {
                 bl: { x: -8, y: 5 },
                 br: { x: 7, y: 5 },
                 tex: { w: 15, h: 11 },
-                angle: 0,
+                anchorAngle: 0,
+                glyphAngle: 0,
                 minScale: 0.5,
-                maxScale: Infinity,
-                curved: null }]);
+                maxScale: Infinity }]);
         t.end();
     });
     t.end();
