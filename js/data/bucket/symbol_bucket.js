@@ -626,7 +626,8 @@ SymbolBucket.prototype.addSymbolQuad = function(symbolQuad) {
         symbolQuad.tex.x,
         symbolQuad.tex.y,
         //angle
-        symbolQuad.angle,
+        symbolQuad.anchorAngle,
+        symbolQuad.glyphAngle,
         // scales
         symbolQuad.maxScale,
         symbolQuad.minScale);
