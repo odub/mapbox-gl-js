@@ -159,6 +159,17 @@ function getGlyphQuads(anchor, shaping, boxScale, line, layout, alongLine) {
                 bl = obl,
                 br = obr;
 
+            if (textRotate) {
+                var sin = Math.sin(textRotate),
+                    cos = Math.cos(textRotate),
+                    matrix = [cos, -sin, sin, cos];
+
+                tl = tl.matMult(matrix);
+                tr = tr.matMult(matrix);
+                bl = bl.matMult(matrix);
+                br = br.matMult(matrix);
+            }
+
             // Prevent label from extending past the end of the line
             var glyphMinScale = Math.max(instance.minScale, labelMinScale);
 
